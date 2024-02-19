@@ -1,4 +1,5 @@
 ---
+import fs from "fs";
 import client from "@data/client.json";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
@@ -6,6 +7,12 @@ import "@styles/root.less";
 import "@styles/dark.less";
 
 const {description, title, preloadImg = ""} = Astro.props;
+
+// Throws an error if the preloadImg is not in the public folder
+const isImageInPublic = fs.existsSync(`public${preloadImg}`);
+if (!isImageInPublic) {
+    throw new Error(`Preload image for ${Astro.url.origin + Astro.url.pathname} is not in /public/.`)
+}
 ---
 <!-- A fully fleshed-out <head>, dynamically changing based on client.json and the page front matter -->
 <html lang="en">
